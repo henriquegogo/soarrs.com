@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+  <channel>
+    <title>SOARRS</title>
+    <link>https://soarrs.com</link>
+    <description>Tech thoughts, projects and discussions.</description>
+    <item>
+      <title>What you should find here?</title>
+      <link>https://soarrs.com/blog/what-you-should-find-here</link>
+      <description>The first post and what you should find here</description>
+    </item>
+  </channel>
+</rss>

@@ -1,6 +1,7 @@
 (function() {
   function templateStart() {
     document.write(`
+    <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "c7173534a70d465a9e59e528c0123cb3"}'></script><!-- End Cloudflare Web Analytics -->
     <header>
       <a href="/" title="Home">
         <img src="assets/logo.png" alt="SOARRS" />
