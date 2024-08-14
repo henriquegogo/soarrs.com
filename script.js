@@ -20,7 +20,7 @@
     </main>
     `;
     const title = document.title;
-    window.addEventListener("hashchange", (event) => {
+    window.addEventListener("hashchange", () => {
       const hash = location.hash.slice(1);
       document.title = hash ? `${title} / ${hash}` : title;
     });
