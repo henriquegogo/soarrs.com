@@ -28,65 +28,25 @@
   }
 
   function highlight(selector) {
-    document.body.innerHTML += `
-      <style>${selector} span * { color: inherit !important }</style>
-    `;
+    document.body.innerHTML += `<style>${selector} span * { color: inherit !important }</style>`;
     document.querySelectorAll(selector).forEach((element) => {
-      element.style.backgroundColor = "#333";
-      element.style.color = "#FFF";
-      element.style.fontFamily = "monospace";
-      element.style.padding = "25px";
-      element.style.whiteSpace = "pre-wrap";
-      element.innerHTML = element.innerHTML.startsWith("&lt;")
-        ? element.innerHTML
-        .replace( // Comments
-          /(&lt;!--.+--&gt;)/gs,
-          "<span style =color:#808080>$1</span>"
-        ).replace( // Attributes
-          /(\w+)=/g,
-          "<span style =color:#87afd7>$1</span>="
-        ).replace( // Strings
-          /([^>])(")(.*?)(")|([^>])(')(.*?)(')/g,
-          "$1<span style =color:#afd700>$2$3$4</span>"
-        ).replace( // Tag open
-          /&lt;(\w*)/g,
-          "<span style =color:#87afd7>&lt;</span><span style =color:#8787af>$1</span>"
-        ).replace( // Tag close
-          /(\w*)&gt;/g,
-          "<span style =color:#8787af>$1</span><span style =color:#87afd7>&gt;</span>"
-        )
-        : element.innerHTML
-        .replace( // Comments
-          /(\/\/ .+|# .+)/g,
-          "<span style =color:#808080>$1</span>"
-        ).replace( // Comments
-          /(\/\*.+\*\/)/gs,
-          "<span style =color:#808080>$1</span>"
-        ).replace( // Declarations
-          /([^\w]|^)(struct|var|let|const|new|def|fn|class|function|int|enum|void|float|char|str|string|public|pub|private|interface|impl|from|import|with)([^\w])/g,
-          "$1<span style =color:#87afd7>$2</span>$3"
-        ).replace( // Statements
-          /([^\w]|^| )(=>|===|==|!=|<=|>=|\+=|-=|\+|-|\/|\*|=|return|if|else|elsif|then|switch|case|default|while|for|foreach|in|of|or|and|not|try|except|finally|throw|catch)([^\w])/g,
-          "$1<span style =color:#8787af>$2</span>$3"
-        ).replace( // Consts and keywords
-          /([^\w]|^)(true|false|True|False|None|Null|NULL|this|self|document|window|console|Math|[A-Z_]{3,})([^\w])/g,
-          "$1<span style =color:#ff8700>$2</span>$3"
-        ).replace( // Functions
-          /(\w+)\(/g,
-          "<span style =color:#ffffaf>$1</span>("
-        ).replace( // JSON Strings
-          /: ("|')(.*?)("|')/g,
-          ": <span style =color:#87afd7>$1$2$3</span>"
-        ).replace( // Strings
-          /([^>])(")(.*?)(")|([^>])(')(.*?)(')/g,
-          "$1<span style =color:#afd700>$2$3$4</span>"
-        );
+      Object.assign(element.style, {
+        backgroundColor: "#333", color: "#FFF", fontFamily: "monospace", padding: "25px", whiteSpace: "pre-wrap"
+      });
+      element.innerHTML = element.innerHTML
+        .replace(/(&lt;!--.+--&gt;|\/\/ .+|# .+)/g, "<span style =color:#808080>$1</span>")   // Comments
+        .replace(/(\w+)([\(])/g, "<span style =color:#ffffaf>$1</span>$2")                    // Functions
+        .replace(/(\w+)( [\+-:]?= |: |[\[\.])/g, "<span style =color:#87afd7>$1</span>$2")    // Variables
+        .replace(/(&lt;[\/\w]+|(?<![\=-])&gt;|[{}$\[\]\(\)])/g, "<span style =color:#8787af>$1</span>") // Blocks
+        .replace(/(&amp;|\||[!<>=]=[=]?|\?)/g, "<span style =color:#ff8700>$1</span>")        // Operators
+        .replace(/([\w-]+)=/g, "<span style =color:#87afd7>$1</span>=")                       // Attributes
+        .replace(/(".*?")|('.*?')/g, "<span style =color:#afd700>$1</span>")                  // Strings
     });
   }
 
   templateStart();
   window.addEventListener("DOMContentLoaded", () => {
     templateEnd();
-    highlight("pre");
+    highlight(".highlight");
   });
 })();
