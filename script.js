@@ -27,26 +27,25 @@
     window.dispatchEvent(new HashChangeEvent("hashchange"))
   }
 
-  function highlight(selector) {
+  function chili(selector) {
     document.body.innerHTML += `<style>${selector} span * { color: inherit !important }</style>`;
     document.querySelectorAll(selector).forEach((element) => {
       Object.assign(element.style, {
-        backgroundColor: "#333", color: "#FFF", fontFamily: "monospace", padding: "25px", whiteSpace: "pre-wrap"
+        backgroundColor: "#111", color: "#bbb", fontFamily: "monospace", padding: "25px", whiteSpace: "pre-wrap"
       });
       element.innerHTML = element.innerHTML
-        .replace(/(&lt;!--.+--&gt;|\/\/ .+|# .+)/g, "<span style =color:#808080>$1</span>")   // Comments
-        .replace(/(\w+)([\(])/g, "<span style =color:#ffffaf>$1</span>$2")                    // Functions
-        .replace(/(\w+)( [\+-:]?= |: |[\[\.])/g, "<span style =color:#87afd7>$1</span>$2")    // Variables
-        .replace(/(&lt;[\/\w]+|(?<![\=-])&gt;|[{}$\[\]\(\)])/g, "<span style =color:#8787af>$1</span>") // Blocks
-        .replace(/(&amp;|\||[!<>=]=[=]?|\?)/g, "<span style =color:#ff8700>$1</span>")        // Operators
-        .replace(/([\w-]+)=/g, "<span style =color:#87afd7>$1</span>=")                       // Attributes
-        .replace(/(".*?")|('.*?')/g, "<span style =color:#afd700>$1</span>")                  // Strings
+        .replace(/(&lt;!--.+--&gt;|\/\/ .+|# .+)/g, "<span style =color:#666>$1</span>")                 // Comments
+        .replace(/(\w+)([\(])|(\b[A-Z][A-Z0-9_]+\b)/g, "<span style =color:#6bf>$1$3</span>$2")          // Func/Const
+        .replace(/(&lt;[\/\w]+|(?<![\=-])&gt;|[{}$\[\]\(\)])/g, "<span style =color:#b6d>$1</span>")     // Blocks/Tags
+        .replace(/(&amp;|\||[!<>=]=[=]?|\?)/g, "<span style =color:#d86>$1</span>")                      // Operators
+        .replace(/(".*?"|'.*?')/g, "<span style =color:#bd0>$1</span>")                                  // Strings
+        .replace(/(\w+)( [\+-:]?= |: |[\[\.])|([\w-]+)(\=)/g, "<span style =color:#db6>$1$3</span>$2$4") // Var/Attr
     });
   }
 
   templateStart();
   window.addEventListener("DOMContentLoaded", () => {
     templateEnd();
-    highlight(".highlight");
+    chili(".highlight");
   });
 })();
